@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { setProfile } from '../store/profileSlice';
 import { fetchProfile } from '../services/APIService';
+import Loader from '../components/Loader';
 
 export interface ProfileScreenProps {
   //
@@ -37,12 +38,8 @@ const ProfileScreen: FC<ProfileScreenProps> = (props) => {
   };
 
   const navigateToForm = () => {
-    navigation.navigate(Routes.ProfileFormScreen);
+    navigation.navigate(Routes.ProfileFormScreen, { profile });
   };
-
-  // const btn = () => {
-  //   console.log('\n profile: ', profile);
-  // };
 
   const loadProfile = () => {
     fetchProfile(dispatch);
@@ -52,24 +49,23 @@ const ProfileScreen: FC<ProfileScreenProps> = (props) => {
     loadProfile();
   }, [dispatch]);
 
-  if (isLoading) {
-    return (
-      <ActivityIndicator size='large' animating={isLoading} color={BLUE} />
-    );
-  }
-
   return (
     <View style={styles.container}>
-      <ProfileHeader profile={profile} />
-      <ProfileMenuItem
-        onMenuItemPress={navigateToHistory}
-        // onMenuItemPress={btn}
-        text={'Check previous orders'}
-      />
-      <ProfileMenuItem
-        onMenuItemPress={navigateToForm}
-        text={'Personal data'}
-      />
+      <ProfileHeader profile={profile} toForm={navigateToForm} />
+      {isLoading ? (
+        <Loader isLoading={isLoading} />
+      ) : (
+        <>
+          <ProfileMenuItem
+            onMenuItemPress={navigateToHistory}
+            text={'Check previous orders'}
+          />
+          <ProfileMenuItem
+            onMenuItemPress={navigateToForm}
+            text={'Personal data'}
+          />
+        </>
+      )}
     </View>
   );
 };

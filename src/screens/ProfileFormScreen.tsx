@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setProfile, setProfileLoading } from '../store/profileSlice';
 import { fetchProfile, updateProfile } from '../services/APIService';
 import { RootState } from '../store/store';
+import Loader from '../components/Loader';
 
 export interface ProfileFormScreenProps {
   //
@@ -31,10 +32,13 @@ export interface ProfileFormScreenProps {
 
 const ProfileFormScreen: FC<ProfileFormScreenProps> = (props) => {
   const dispatch = useDispatch();
-  const { profile, isLoading } = useSelector(
-    (state: RootState) => state.profile
-  );
-  const { navigation } = props;
+  const { isLoading } = useSelector((state: RootState) => state.profile);
+  const {
+    navigation,
+    route: {
+      params: { profile },
+    },
+  } = props;
   const { name = '', email = '' } = profile;
 
   const [inputName, onChangeName] = useState(name);
@@ -55,18 +59,15 @@ const ProfileFormScreen: FC<ProfileFormScreenProps> = (props) => {
 
   const onPressSave = async () => {
     dispatch(setProfileLoading(true));
-    const newProfile = { name: inputName, email: inputEmail };
-
-    console.log('\n newProfile: ', newProfile);
     try {
-      // await updateProfile(inputName, inputEmail);
+      await updateProfile(inputName, inputEmail);
     } catch (err) {
       console.error('\n Save profile err: ', err);
     } finally {
-      // loadProfile();
+      loadProfile();
+      goBack();
       dispatch(setProfileLoading(false));
     }
-    // dispatch(setProfile({ name: inputName, email: inputEmail }));
   };
 
   return (
@@ -76,18 +77,20 @@ const ProfileFormScreen: FC<ProfileFormScreenProps> = (props) => {
         <TextInput
           value={inputName}
           defaultValue={name}
-          onChange={onChangeName}
+          onChangeText={onChangeName}
           keyboardType='default'
           style={styles.input}
         />
         <TextInput
           value={inputEmail}
           defaultValue={email}
-          onChange={onChangeEmail}
+          onChangeText={onChangeEmail}
           keyboardType='email-address'
           style={styles.input}
         />
+        {isLoading && <Loader isLoading={isLoading} />}
       </View>
+
       <Button title='Save' onPress={onPressSave} buttonStyle={styles.button} />
     </View>
   );
@@ -105,8 +108,6 @@ const styles = StyleSheet.create({
   },
   forms: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: 'red',
     marginTop: 12,
     marginHorizontal: containerMarginHorizontal,
   },
@@ -122,5 +123,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: WIDTH - containerMarginHorizontal * 2,
+    marginBottom: 8,
   },
 });

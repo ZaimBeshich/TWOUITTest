@@ -69,7 +69,7 @@ export const fetchHistory = async (dispatch: AppDispatch) => {
 
 export const updateProfile = async (name: string, email: string) => {
   try {
-    await fetch(`${url}/profile/user`, {
+    await fetch(`${url}/profile`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

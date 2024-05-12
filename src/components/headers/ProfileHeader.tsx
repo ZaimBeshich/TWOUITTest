@@ -16,16 +16,19 @@ import { Profile } from '../../store/profileSlice';
 
 interface ProfileHeaderProps {
   profile: Profile;
+  toForm: () => void;
 }
 
 const ProfileHeader: FC<ProfileHeaderProps> = (props: ProfileHeaderProps) => {
   const {
     profile: { name = '' },
+    toForm,
   } = props;
 
   const onGearPress = () => {
-    console.log('gear');
+    toForm();
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>

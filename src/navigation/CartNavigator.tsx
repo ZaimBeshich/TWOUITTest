@@ -1,14 +1,8 @@
 import React, { FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet } from 'react-native';
 
 import { Routes } from './routes';
 
-import { TURQUOISE } from '../constants/colors';
-import {
-  useSafeAreaInsets,
-  withSafeAreaInsets,
-} from 'react-native-safe-area-context';
 import CartScreen from '../screens/CartScreen';
 
 const Stack = createNativeStackNavigator<any>(); //!
@@ -25,10 +19,3 @@ const CartNavigator: FC = () => {
   );
 };
 export default CartNavigator;
-
-const styles = StyleSheet.create({
-  contentStyle: {
-    flex: 1,
-    backgroundColor: TURQUOISE,
-  },
-});

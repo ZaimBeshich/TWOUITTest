@@ -8,21 +8,10 @@ import {
 } from 'react-native-safe-area-context';
 import { StyleSheet } from 'react-native';
 import CatalogNavigator from './CatalogNavigator';
-import CatalogScreen from '../screens/CatalogScreen';
-import CartScreen from '../screens/CartScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import {
-  BLUE_10,
-  DARK_LIGHT,
-  GREY_LINK,
-  LIGHT,
-  LIGHT_BLUE,
-  PURPLE,
-} from '../constants/colors';
+import { BLUE_10, LIGHT, LIGHT_BLUE, PURPLE } from '../constants/colors';
 import { SIZES } from '../constants/fonts';
 import CartNavigator from './CartNavigator';
 import ProfileNavigator from './ProfileNavigator';
-import Icon from '../components/Icon';
 import { getTabBarIcon } from '../utils/tabNavigatorUtils';
 
 const Tab = createBottomTabNavigator();

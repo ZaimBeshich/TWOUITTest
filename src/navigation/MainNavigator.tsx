@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { Routes } from './routes';
 
 import TabNavigator from './TabNavigator';
-import { FON, TURQUOISE } from '../constants/colors';
+import { TURQUOISE } from '../constants/colors';
 import CatalogNavigator from './CatalogNavigator';
 import CartNavigator from './CartNavigator';
 import ProfileNavigator from './ProfileNavigator';
@@ -42,9 +42,6 @@ const styles = StyleSheet.create({
   },
   contentStyle: {
     flex: 1,
-    // flexDirection: 'column',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: TURQUOISE,
   },
 });
