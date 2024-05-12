@@ -30,6 +30,8 @@ import Icon from '../components/Icon';
 import { createOrder } from '../services/APIService';
 import { getTotal, serializeOrder } from '../utils/serialize';
 import Divider from '../components/Divider';
+import ConfirmedOrderModal from '../components/modals/ConfirmedOrderModal';
+import ErrorModal from '../components/modals/ErrorModal';
 
 const CartScreen: FC = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -120,24 +122,14 @@ const CartScreen: FC = ({ navigation }) => {
           <Button title='confirm order' onPress={onPress} />
         </View>
       </View>
-      <CustomModal
-        isVisible={isModalVisible}
+      <ConfirmedOrderModal
+        isModalVisible={isModalVisible}
         onCancel={onCancel}
-        style={styles.modalMask}>
-        <View style={styles.modalContainer}>
-          <Icon icon={success} width={45} height={45} />
-          <Text style={styles.modalText}>Order Confirmed!</Text>
-        </View>
-      </CustomModal>
-      <CustomModal
-        isVisible={isErrorModalVisible}
-        onCancel={onErrorModalCancel}
-        style={styles.modalMask}>
-        <View style={styles.modalContainer}>
-          <Icon icon={fail} width={45} height={45} />
-          <Text style={styles.errorModalText}>Cart is Empty!</Text>
-        </View>
-      </CustomModal>
+      />
+      <ErrorModal
+        isErrorModalVisible={isErrorModalVisible}
+        onErrorModalCancel={onErrorModalCancel}
+      />
     </View>
   );
 };
@@ -180,28 +172,5 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     lineHeight: 30,
     marginTop: 50,
-  },
-  modalMask: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    height: 200,
-    width: WIDTH - 30,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 12,
-  },
-  modalText: {
-    marginTop: 10,
-    fontSize: SIZES.TEXT_18,
-    color: GREEN,
-  },
-
-  errorModalText: {
-    marginTop: 10,
-    fontSize: SIZES.TEXT_18,
-    color: RED,
   },
 });

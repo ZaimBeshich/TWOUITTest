@@ -8,6 +8,7 @@ import { RootState } from '../store/store';
 import { fetchHistory } from '../services/APIService';
 import HistoryItem from '../components/HistoryItem';
 import Divider from '../components/Divider';
+import Loader from '../components/Loader';
 
 export interface HistoryScreenProps {
   navigation: any; //!
@@ -37,10 +38,7 @@ const HistoryScreen: FC<HistoryScreenProps> = (props) => {
     <View style={styles.container}>
       <HistoryScreenHeader goBack={goBack} />
       {isLoading ? (
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <ActivityIndicator size='large' animating={isLoading} color={BLUE} />
-        </View>
+        <Loader isLoading={isLoading} />
       ) : (
         <FlatList
           data={history}

@@ -11,6 +11,7 @@ import { RootState } from '../store/store';
 import { setProducts } from '../store/productsSlice';
 import { addItem } from '../store/cartSlice';
 import { sortDown, sortUp } from '../utils/sort';
+import Loader from '../components/Loader';
 
 type CatalogScreenProps = {
   navigation: StackNavigationProp<any, any>; // Adjust the generic types as needed
@@ -59,22 +60,20 @@ const CatalogScreen: FC<CatalogScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <CatalogHeader sortByCheap={sortByCheap} sortByTop={sortByTop} />
       {isLoading ? (
-        <ActivityIndicator size='large' animating={isLoading} color={BLUE} />
+        <Loader isLoading={isLoading} />
       ) : (
-        <>
-          <CatalogHeader sortByCheap={sortByCheap} sortByTop={sortByTop} />
-          <FlatList
-            data={products}
-            renderItem={renderItem}
-            removeClippedSubviews
-            columnWrapperStyle={styles.itemsBorder}
-            showsVerticalScrollIndicator={false}
-            numColumns={3}
-            refreshing={isLoading}
-            onRefresh={loadCatalog}
-          />
-        </>
+        <FlatList
+          data={products}
+          renderItem={renderItem}
+          removeClippedSubviews
+          columnWrapperStyle={styles.itemsBorder}
+          showsVerticalScrollIndicator={false}
+          numColumns={3}
+          refreshing={isLoading}
+          onRefresh={loadCatalog}
+        />
       )}
     </View>
   );

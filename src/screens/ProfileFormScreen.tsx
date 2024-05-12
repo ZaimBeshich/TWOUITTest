@@ -43,7 +43,6 @@ const ProfileFormScreen: FC<ProfileFormScreenProps> = (props) => {
 
   const [inputName, onChangeName] = useState(name);
   const [inputEmail, onChangeEmail] = useState(email);
-  console.log('\nprofile: ', profile);
 
   const goBack = () => {
     navigation.goBack();
@@ -52,10 +51,6 @@ const ProfileFormScreen: FC<ProfileFormScreenProps> = (props) => {
   const loadProfile = () => {
     fetchProfile(dispatch);
   };
-
-  useEffect(() => {
-    loadProfile();
-  }, []);
 
   const onPressSave = async () => {
     dispatch(setProfileLoading(true));

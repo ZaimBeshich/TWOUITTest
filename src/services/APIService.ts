@@ -75,7 +75,7 @@ export const updateProfile = async (name: string, email: string) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name, email }),
-    }).then((res) => console.log('\n JSON', res));
+    });
   } catch (error) {
     console.error('Failed to update profile:', error);
   }
