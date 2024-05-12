@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,82 +8,136 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import CatalogHeader from '../components/CatalogHeader';
-import {BLUE, BLUE_10, DARK, FON} from '../constants/colors';
-import {Product} from '../constants/types';
-import {Routes} from '../navigation/routes';
-import {getCart, getProducts} from '../services/APIService';
-import CatalogItem from '../components/CatalogItem';
-import CartHeader from '../components/CartHeader';
+import { BLUE, BLUE_10, DARK, FON, GREEN, RED } from '../constants/colors';
+import CartHeader from '../components/headers/CartHeader';
 import Button from '../components/Button';
-import CartItem, {CartItemProps} from '../components/CartItem';
-import {SIZES} from '../constants/fonts';
+import CartItem, { CartItemProps } from '../components/CartItem';
+import { SIZES } from '../constants/fonts';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  removeItem,
+  clearCart,
+  setCartItems,
+  setCartLoading,
+} from '../store/cartSlice';
+import { RootState } from '../store/store';
+import CustomModal from '../components/CustomModal';
+import { WIDTH } from '../constants/constants';
 
-const CartScreen: FC = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
+import success from '../svg/success.svg';
+import fail from '../svg/fail.svg';
+import Icon from '../components/Icon';
+import { createOrder } from '../services/APIService';
+import { getTotal, serializeOrder } from '../utils/serialize';
+import Divider from '../components/Divider';
+
+const CartScreen: FC = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { items: cartItems, isLoading } = useSelector(
+    (state: RootState) => state.cart
+  );
   const [total, setTotal] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
 
-  const loadCart = async () => {
-    setIsLoading(true);
-    try {
-      await getCart().then(res => {
-        const sorted = res
-          .map(el => el.item)
-          .sort((a, b) => Number(b.price) - Number(a.price));
-        setData(sorted);
-        console.log('\n sorted: ', sorted);
-        const sum = sorted.reduce((acc, el) => acc + Number(el.price), 0);
-        setTotal(sum);
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
+  const renderItem = ({ item, index }: CartItemProps) => (
+    <CartItem item={item} index={index} handleRemove={handleRemove} />
+  );
+
+  const onPress = () => {
+    if (!!cartItems.length) {
+      makeOrder();
+    } else {
+      setIsErrorModalVisible(true);
     }
   };
 
-  const renderItem = ({item, index}: CartItemProps) => (
-    <CartItem item={item} index={index} />
-  );
+  const handleRemove = (itemId: number) => {
+    dispatch(removeItem(String(itemId)));
+  };
 
-  const renderDivider = () => <View style={styles.divider} />;
+  const makeOrder = async () => {
+    const order = serializeOrder(cartItems);
+    try {
+      await createOrder(order, dispatch);
+      dispatch(clearCart());
+    } catch (error) {
+      console.error('\n Cart error: ', error);
+    }
 
-  const onPress = () => console.log(data);
+    setIsModalVisible(true);
+  };
+
+  const renderEmptyList = () => {
+    return <Text style={styles.emptyCart}>{'Empty\nCart'}</Text>;
+  };
+
+  const onCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const onErrorModalCancel = () => {
+    setIsErrorModalVisible(false);
+  };
 
   useEffect(() => {
-    loadCart();
-  }, []);
+    dispatch(setCartLoading(true));
+    dispatch(setCartItems(cartItems));
+
+    const total = getTotal(cartItems);
+    setTotal(total);
+
+    dispatch(setCartLoading(false));
+  }, [cartItems]);
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size='large' animating={isLoading} color={BLUE} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" animating={isLoading} color={BLUE} />
-      ) : (
-        <View style={styles.content}>
-          <CartHeader />
+      <View style={styles.content}>
+        <CartHeader />
 
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            keyExtractor={(_item, index) => String(index)}
-            showsVerticalScrollIndicator={false}
-            ItemSeparatorComponent={renderDivider}
-            removeClippedSubviews
-            style={styles.list}
-            refreshing={isLoading}
-            onRefresh={loadCart}
-          />
-          <View style={styles.footer}>
-            <Text style={styles.total}>{`Total: ${total} ₽`}</Text>
-            <Button
-              title="confirm order"
-              onPress={onPress}
-              buttonStyle={styles.button}
-            />
-          </View>
+        <FlatList
+          data={cartItems}
+          renderItem={renderItem}
+          keyExtractor={(_item, index) => String(index)}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <Divider />}
+          ListEmptyComponent={renderEmptyList}
+          removeClippedSubviews
+          style={styles.list}
+          refreshing={isLoading}
+        />
+        <View style={styles.footer}>
+          <Text style={styles.total}>{`Total: ${total} ₽`}</Text>
+
+          <Button title='confirm order' onPress={onPress} />
         </View>
-      )}
+      </View>
+      <CustomModal
+        isVisible={isModalVisible}
+        onCancel={onCancel}
+        style={styles.modalMask}>
+        <View style={styles.modalContainer}>
+          <Icon icon={success} width={45} height={45} />
+          <Text style={styles.modalText}>Order Confirmed!</Text>
+        </View>
+      </CustomModal>
+      <CustomModal
+        isVisible={isErrorModalVisible}
+        onCancel={onErrorModalCancel}
+        style={styles.modalMask}>
+        <View style={styles.modalContainer}>
+          <Icon icon={fail} width={45} height={45} />
+          <Text style={styles.errorModalText}>Cart is Empty!</Text>
+        </View>
+      </CustomModal>
     </View>
   );
 };
@@ -98,12 +152,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: FON,
   },
-  divider: {
-    borderTopWidth: 1,
-    borderRadius: 20,
-    borderColor: BLUE_10,
-    marginVertical: 2,
-  },
   content: {
     flex: 1,
     flexDirection: 'column',
@@ -111,19 +159,49 @@ const styles = StyleSheet.create({
   list: {
     marginHorizontal: 14,
   },
-
   footer: {
     borderTopWidth: 1,
     borderRadius: 20,
     borderColor: BLUE_10,
     padding: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   total: {
+    flexDirection: 'row',
     color: DARK,
     fontSize: SIZES.TEXT_16,
     marginBottom: 12,
   },
-  button: {
-    width: '80%',
+  emptyCart: {
+    textAlign: 'center',
+    fontSize: SIZES.TEXT_18,
+    color: DARK,
+    textTransform: 'uppercase',
+    lineHeight: 30,
+    marginTop: 50,
+  },
+  modalMask: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContainer: {
+    height: 200,
+    width: WIDTH - 30,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+  },
+  modalText: {
+    marginTop: 10,
+    fontSize: SIZES.TEXT_18,
+    color: GREEN,
+  },
+
+  errorModalText: {
+    marginTop: 10,
+    fontSize: SIZES.TEXT_18,
+    color: RED,
   },
 });

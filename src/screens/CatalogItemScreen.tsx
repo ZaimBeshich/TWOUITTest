@@ -1,38 +1,28 @@
-import React, {FC} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  Text,
-  Image,
-} from 'react-native';
-import Item from '../components/CatalogItem';
-import {products} from '../constants/products';
-import {Product} from '../constants/types';
-import {BLUE, BLUE_10, FON} from '../constants/colors';
-import {scale, verticalScale} from '../utils/scale';
-import {WIDTH} from '../constants/constants';
-import {SIZES} from '../constants/fonts';
+import React from 'react';
+import { View, StyleSheet, Text, Image } from 'react-native';
+import { FON } from '../constants/colors';
+import { scale, verticalScale } from '../utils/scale';
+import { WIDTH } from '../constants/constants';
+import { SIZES } from '../constants/fonts';
 import Button from '../components/Button';
-import CatalogItemHeader from '../components/CatalogItemHeader';
-import {addToCart, getCart} from '../services/APIService';
+import CatalogItemHeader from '../components/headers/CatalogItemHeader';
+import { addItem } from '../store/cartSlice';
+import { useDispatch } from 'react-redux';
 
 // type CatalogItemScreen = {
 //   item: Product;
 // };
 
-const CatalogItemScreen = props => {
+const CatalogItemScreen = (props) => {
+  const dispatch = useDispatch();
   const {
     navigation,
-    route: {
-      params: {item},
-    },
+    route: { params: item },
   } = props;
-  const {price, product_type, title, image} = item;
+  const { price, product_type, title, image } = item;
 
   const onPressButton = () => {
-    addToCart({item});
+    dispatch(addItem({ id: item.id, item, quantity: 1 }));
   };
 
   const goBack = () => {
@@ -42,7 +32,7 @@ const CatalogItemScreen = props => {
   return (
     <View style={styles.container}>
       <CatalogItemHeader goBack={goBack} />
-      <Image source={{uri: image}} style={styles.image} />
+      <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.row}>
         <Text style={styles.title}> Title: </Text>
         <Text style={styles.subtitle}>{title}</Text>
@@ -57,7 +47,7 @@ const CatalogItemScreen = props => {
       </View>
 
       <Button
-        title="Buy now"
+        title='Buy now'
         onPress={onPressButton}
         buttonStyle={styles.button}
       />

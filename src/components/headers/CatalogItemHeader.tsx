@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {WIDTH} from '../constants/constants';
-import {SIZES} from '../constants/fonts';
-import {TURQUOISE, WHITE} from '../constants/colors';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { WIDTH } from '../../constants/constants';
+import { SIZES } from '../../constants/fonts';
+import { TURQUOISE, WHITE } from '../../constants/colors';
 
 interface CatalogItemHeaderProps {
   goBack: () => void;

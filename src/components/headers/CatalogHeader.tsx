@@ -1,12 +1,17 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Product} from '../constants/types';
-import {WIDTH} from '../constants/constants';
-import Button from './Button';
-import {SIZES} from '../constants/fonts';
-import {scale, verticalScale} from '../utils/scale';
-import {DARK_LIGHT, LIGHT_BLUE, TURQUOISE, WHITE} from '../constants/colors';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Product } from '../../constants/types';
+import { WIDTH } from '../../constants/constants';
+import Button from '../Button';
+import { SIZES } from '../../constants/fonts';
+import { scale, verticalScale } from '../../utils/scale';
+import {
+  DARK_LIGHT,
+  LIGHT_BLUE,
+  TURQUOISE,
+  WHITE,
+} from '../../constants/colors';
 
 interface CatalogHeaderProps {
   sortByCheap: () => void;
@@ -14,7 +19,7 @@ interface CatalogHeaderProps {
 }
 
 const CatalogHeader = (props: CatalogHeaderProps): JSX.Element => {
-  const {sortByCheap, sortByTop} = props;
+  const { sortByCheap, sortByTop } = props;
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={sortByTop}>
@@ -39,7 +44,7 @@ const styles = StyleSheet.create({
   },
   listText: {
     textAlign: 'center',
-    fontSize: SIZES.TEXT_14,
+    fontSize: SIZES.TEXT_16,
     color: WHITE,
   },
 });

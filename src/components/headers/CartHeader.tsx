@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {WIDTH} from '../constants/constants';
-import {SIZES} from '../constants/fonts';
-import {TURQUOISE, WHITE} from '../constants/colors';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { WIDTH } from '../../constants/constants';
+import { SIZES } from '../../constants/fonts';
+import { TURQUOISE, WHITE } from '../../constants/colors';
 
 interface CartHeaderProps {
   // goBack: () => void;
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontSize: SIZES.TEXT_14,
+    fontSize: SIZES.TEXT_16,
     color: WHITE,
     letterSpacing: 1.4,
   },

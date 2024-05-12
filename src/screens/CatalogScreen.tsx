@@ -1,78 +1,78 @@
-import React, {FC, useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  ActivityIndicator,
-  ActivityIndicatorBase,
-  Text,
-} from 'react-native';
-import Item from '../components/CatalogItem';
-import {products} from '../constants/products';
-import {Product} from '../constants/types';
-import {BLUE, BLUE_10, FON} from '../constants/colors';
-import {Routes} from '../navigation/routes';
-import CatalogHeader from '../components/CatalogHeader';
-import {getProducts} from '../services/APIService';
+import React, { FC, useEffect } from 'react';
+import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { Product } from '../constants/types';
+import { BLUE, BLUE_10, FON } from '../constants/colors';
+import { Routes } from '../navigation/routes';
+import CatalogHeader from '../components/headers/CatalogHeader';
+import { fetchProducts } from '../services/APIService';
 import CatalogItem from '../components/CatalogItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { setProducts } from '../store/productsSlice';
+import { addItem } from '../store/cartSlice';
+import { sortDown, sortUp } from '../utils/sort';
 
-const CatalogScreen: FC = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
+type CatalogScreenProps = {
+  navigation: StackNavigationProp<any, any>; // Adjust the generic types as needed
+};
+
+const CatalogScreen: FC<CatalogScreenProps> = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { products, isLoading } = useSelector(
+    (state: RootState) => state.products
+  );
 
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      getProducts().then(res => setData(res));
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    loadCatalog();
+  }, [dispatch]);
 
-  const renderItem = ({item, index}: {item: Product; index: number}) => {
+  const loadCatalog = async () => {
+    await fetchProducts(dispatch);
+  };
+
+  const renderItem = ({ item, index }: { item: Product; index: number }) => {
     return (
       <CatalogItem
         item={item}
         index={index}
-        navigateToItemScreen={() => navigateToItemScreen({item})}
+        navigateToItemScreen={() => navigateToItemScreen(item)}
+        handleAddToCart={() => handleAddToCart(item)}
       />
     );
+  };
+
+  const handleAddToCart = (item: Product) => {
+    dispatch(addItem({ id: item.id, item, quantity: 1 }));
   };
 
   const navigateToItemScreen = (item: Product) => {
     navigation.navigate(Routes.CatalogItemScreen, item);
   };
 
-  const sortByCheap = (arr: Product[]) => {
-    const newData = [...arr].sort((a, b) => Number(a.price) - Number(b.price));
-    setData(newData);
+  const sortByCheap = () => {
+    dispatch(setProducts(sortDown([...products])));
   };
 
-  const sortByTop = (arr: Product[]) => {
-    const newData = [...arr].sort((a, b) => Number(b.price) - Number(a.price));
-    setData(newData);
+  const sortByTop = () => {
+    dispatch(setProducts(sortUp([...products])));
   };
 
   return (
     <View style={styles.container}>
       {isLoading ? (
-        <ActivityIndicator size="large" animating={isLoading} color={BLUE} />
+        <ActivityIndicator size='large' animating={isLoading} color={BLUE} />
       ) : (
         <>
-          <CatalogHeader
-            sortByCheap={() => sortByCheap(data)}
-            sortByTop={() => sortByTop(data)}
-          />
+          <CatalogHeader sortByCheap={sortByCheap} sortByTop={sortByTop} />
           <FlatList
-            data={data}
+            data={products}
             renderItem={renderItem}
             removeClippedSubviews
             columnWrapperStyle={styles.itemsBorder}
             showsVerticalScrollIndicator={false}
             numColumns={3}
             refreshing={isLoading}
+            onRefresh={loadCatalog}
           />
         </>
       )}

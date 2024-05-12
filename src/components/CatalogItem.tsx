@@ -1,29 +1,27 @@
 import React from 'react';
 
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {Product} from '../constants/types';
-import {WIDTH} from '../constants/constants';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Product } from '../constants/types';
+import { WIDTH } from '../constants/constants';
 import Button from './Button';
-import {SIZES} from '../constants/fonts';
-import {scale, verticalScale} from '../utils/scale';
-import {addToCart} from '../services/APIService';
+import { SIZES } from '../constants/fonts';
+import { scale, verticalScale } from '../utils/scale';
+import { addToCart } from '../services/APIService';
 
 interface CatalogItemProps {
   item: Product;
   index: number;
   navigateToItemScreen: (item: Product) => void;
+  handleAddToCart: (item: Product) => void;
 }
 
 const CatalogItem = ({
   item,
   index,
   navigateToItemScreen,
+  handleAddToCart,
 }: CatalogItemProps): JSX.Element => {
-  const {title, price, image} = item;
-
-  const onPressButton = () => {
-    addToCart({item});
-  };
+  const { title, price, image } = item;
 
   const isMarginRight = () => {
     return (index + 1) % 3 !== 0;
@@ -31,16 +29,16 @@ const CatalogItem = ({
 
   return (
     <TouchableOpacity
-      onPress={navigateToItemScreen}
+      onPress={() => navigateToItemScreen(item)}
       style={[styles.container, isMarginRight() && styles.marginRight]}>
-      <Text style={styles.title} ellipsizeMode="tail" numberOfLines={2}>
+      <Text style={styles.title} ellipsizeMode='tail' numberOfLines={2}>
         {title}
       </Text>
       <View style={styles.imageContainer}>
-        <Image source={{uri: image}} style={styles.image} />
+        <Image source={{ uri: image }} style={styles.image} />
       </View>
 
-      <Button title={`${price} ₽`} onPress={onPressButton} />
+      <Button title={`${price} ₽`} onPress={() => handleAddToCart(item)} />
     </TouchableOpacity>
   );
 };
