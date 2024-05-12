@@ -5,7 +5,7 @@ import { Routes } from '../navigation/routes';
 import profile from '../svg/profile.svg';
 import home from '../svg/home.svg';
 import cart from '../svg/cart.svg';
-import { BLUE_10, GREY_LINK, PURPLE } from '../constants/colors';
+import { BLUE_10, PURPLE } from '../constants/colors';
 
 const getTabIconName = (routeName: string) => {
   switch (routeName) {

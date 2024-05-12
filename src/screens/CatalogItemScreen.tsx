@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { FON } from '../constants/colors';
 import { scale, verticalScale } from '../utils/scale';
@@ -8,27 +8,25 @@ import Button from '../components/Button';
 import CatalogItemHeader from '../components/headers/CatalogItemHeader';
 import { addItem } from '../store/cartSlice';
 import { useDispatch } from 'react-redux';
+import { CatalogItemScreenProps, Product } from '../constants/types';
 
-// type CatalogItemScreen = {
-//   item: Product;
-// };
-
-const CatalogItemScreen = (props) => {
+const CatalogItemScreen: FC<CatalogItemScreenProps> = ({
+  navigation,
+  route: { params },
+}) => {
   const dispatch = useDispatch();
-  const {
-    navigation,
-    route: { params: item },
-  } = props;
+  const { item } = params;
   const { price, product_type, title, image } = item;
 
   const onPressButton = () => {
-    dispatch(addItem({ id: item.id, item, quantity: 1 }));
+    if (item) {
+      dispatch(addItem({ id: item.id, item, quantity: 1 }));
+    }
   };
 
   const goBack = () => {
     navigation.goBack();
   };
-
   return (
     <View style={styles.container}>
       <CatalogItemHeader goBack={goBack} />

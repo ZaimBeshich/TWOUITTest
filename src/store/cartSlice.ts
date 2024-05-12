@@ -1,6 +1,6 @@
 // src/components/store/cartSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartItem, CartState, Product } from '../constants/types';
+import { CartItem, CartState } from '../constants/types';
 
 const initialState: CartState = {
   items: [],

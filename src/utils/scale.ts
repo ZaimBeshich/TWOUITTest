@@ -1,8 +1,11 @@
-import {Image, PixelRatio} from 'react-native';
-import {HEIGHT, WIDTH} from '../constants/constants';
+import { Image, ImageSourcePropType, PixelRatio } from 'react-native';
+import { HEIGHT, WIDTH } from '../constants/constants';
 
-export const scaleImageHeight = (source, desiredWidth) => {
-  const {width: imageWidth, height: imageHeight} =
+export const scaleImageHeight = (
+  source: ImageSourcePropType,
+  desiredWidth: number
+) => {
+  const { width: imageWidth, height: imageHeight } =
     Image.resolveAssetSource(source);
   return (desiredWidth / imageWidth) * imageHeight;
 };

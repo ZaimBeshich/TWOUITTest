@@ -4,8 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Routes } from './routes';
 
 import CartScreen from '../screens/CartScreen';
+import { RootStackParamList } from '../constants/types';
 
-const Stack = createNativeStackNavigator<any>(); //!
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const CartNavigator: FC = () => {
   return (

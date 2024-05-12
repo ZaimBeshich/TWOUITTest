@@ -1,30 +1,15 @@
 import React, { FC, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Touchable,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { BLUE, DARK_LIGHT, FON, PURPLE } from '../constants/colors';
+import { View, StyleSheet } from 'react-native';
+import { FON } from '../constants/colors';
 import ProfileHeader from '../components/headers/ProfileHeader';
-import Icon from '../components/Icon';
 
-import smallArrow from '../svg/smallArrow.svg';
-import { SIZES } from '../constants/fonts';
 import ProfileMenuItem from '../components/ProfileMenuItem';
 import { Routes } from '../navigation/routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { setProfile } from '../store/profileSlice';
-import { fetchProfile } from '../services/APIService';
+import { getProfile } from '../services/APIService';
 import Loader from '../components/Loader';
-
-export interface ProfileScreenProps {
-  //
-  navigation: any; //!
-}
+import { ProfileScreenProps } from '../constants/types';
 
 const ProfileScreen: FC<ProfileScreenProps> = (props) => {
   const { navigation } = props;
@@ -42,7 +27,7 @@ const ProfileScreen: FC<ProfileScreenProps> = (props) => {
   };
 
   const loadProfile = () => {
-    fetchProfile(dispatch);
+    getProfile(dispatch);
   };
 
   useEffect(() => {

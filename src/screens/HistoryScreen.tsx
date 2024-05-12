@@ -5,14 +5,11 @@ import { BLUE, FON } from '../constants/colors';
 import HistoryScreenHeader from '../components/headers/HistoryScreenHeader';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
-import { fetchHistory } from '../services/APIService';
+import { getHistory } from '../services/APIService';
 import HistoryItem from '../components/HistoryItem';
 import Divider from '../components/Divider';
 import Loader from '../components/Loader';
-
-export interface HistoryScreenProps {
-  navigation: any; //!
-}
+import { HistoryScreenProps } from '../constants/types';
 
 const HistoryScreen: FC<HistoryScreenProps> = (props) => {
   const { navigation } = props;
@@ -27,7 +24,7 @@ const HistoryScreen: FC<HistoryScreenProps> = (props) => {
   };
 
   const loadHistory = () => {
-    fetchHistory(dispatch);
+    getHistory(dispatch);
   };
 
   useEffect(() => {

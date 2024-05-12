@@ -1,30 +1,6 @@
 // features/profileSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product, ProductsState } from '../constants/types';
-
-export type Profile = {
-  name: string;
-  email: string;
-};
-
-export type HistoryItem = {
-  productId: number;
-  quantity: number;
-};
-
-export type History = {
-  id: number;
-  items: HistoryItem[];
-  total: number;
-  createdAt: string;
-  image: string;
-};
-
-export interface ProfileState {
-  profile: Profile;
-  history: History[];
-  isLoading: boolean;
-}
+import { Profile, ProfileState } from '../constants/types';
 
 const initialState: ProfileState = {
   profile: { name: '', email: '' },

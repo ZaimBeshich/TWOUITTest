@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, View } from 'react-native';
 
@@ -13,8 +13,9 @@ import {
   useSafeAreaInsets,
   withSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { RootStackParamList } from '../constants/types';
 
-const Stack = createNativeStackNavigator<any>(); //!
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainNavigator: FC = () => {
   const insets = useSafeAreaInsets();

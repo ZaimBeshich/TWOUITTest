@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from 'react';
 import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
-import { Product } from '../constants/types';
+import { CatalogScreenProps, Product } from '../constants/types';
 import { BLUE, BLUE_10, FON } from '../constants/colors';
 import { Routes } from '../navigation/routes';
 import CatalogHeader from '../components/headers/CatalogHeader';
-import { fetchProducts } from '../services/APIService';
+import { getProducts } from '../services/APIService';
 import CatalogItem from '../components/CatalogItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
@@ -13,12 +13,9 @@ import { addItem } from '../store/cartSlice';
 import { sortDown, sortUp } from '../utils/sort';
 import Loader from '../components/Loader';
 
-type CatalogScreenProps = {
-  navigation: StackNavigationProp<any, any>; // Adjust the generic types as needed
-};
-
-const CatalogScreen: FC<CatalogScreenProps> = ({ navigation }) => {
+const CatalogScreen: FC<CatalogScreenProps> = (props) => {
   const dispatch = useDispatch();
+  const { navigation } = props;
   const { products, isLoading } = useSelector(
     (state: RootState) => state.products
   );
@@ -28,7 +25,7 @@ const CatalogScreen: FC<CatalogScreenProps> = ({ navigation }) => {
   }, [dispatch]);
 
   const loadCatalog = async () => {
-    await fetchProducts(dispatch);
+    await getProducts(dispatch);
   };
 
   const renderItem = ({ item, index }: { item: Product; index: number }) => {
@@ -57,6 +54,8 @@ const CatalogScreen: FC<CatalogScreenProps> = ({ navigation }) => {
   const sortByTop = () => {
     dispatch(setProducts(sortUp([...products])));
   };
+
+  // console.log('Cat props: ', props);
 
   return (
     <View style={styles.container}>

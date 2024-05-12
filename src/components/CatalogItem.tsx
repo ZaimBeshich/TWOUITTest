@@ -6,7 +6,6 @@ import { WIDTH } from '../constants/constants';
 import Button from './Button';
 import { SIZES } from '../constants/fonts';
 import { scale, verticalScale } from '../utils/scale';
-import { addToCart } from '../services/APIService';
 
 interface CatalogItemProps {
   item: Product;

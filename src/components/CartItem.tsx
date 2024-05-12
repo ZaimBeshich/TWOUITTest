@@ -1,34 +1,27 @@
 import React from 'react';
 
-import {
-  Image,
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Product } from '../constants/types';
 import { WIDTH } from '../constants/constants';
 import { SIZES } from '../constants/fonts';
 import { scale, verticalScale } from '../utils/scale';
-import { DARK, GREY_LINK, GREY_MONTH } from '../constants/colors';
+import { DARK, GREY_MONTH } from '../constants/colors';
 
 import close from '../svg/close.svg';
 import Icon from './Icon';
-import CustomModal from './CustomModal';
 
 export interface CartItemProps {
-  item: Product;
-  index: number;
   handleRemove: (id: number) => void;
+  index: number;
+  item: {
+    id: number;
+    item: Product;
+    quantity: number;
+  };
 }
 
-const CartItem = ({
-  item,
-  index,
-  handleRemove,
-}: CartItemProps): JSX.Element => {
+const CartItem = (props: CartItemProps): JSX.Element => {
+  const { item, index, handleRemove } = props;
   const {
     quantity,
     item: { image, price, title },
@@ -60,19 +53,6 @@ const CartItem = ({
       </View>
     </View>
   );
-};
-
-const bb = {
-  id: 8,
-  item: {
-    id: 8,
-    image:
-      'https://www.notebookcheck-ru.com/fileadmin/Notebooks/News/_nc3/Apple_iPhone_12_vs_Apple_iPad_Mini_6_21518.jpg',
-    price: '80000',
-    product_type: 'Cult Products',
-    title: 'IPod Touch 8GB',
-  },
-  quantity: 2,
 };
 
 const CONTAINER_MARGIN = 14 * 2;

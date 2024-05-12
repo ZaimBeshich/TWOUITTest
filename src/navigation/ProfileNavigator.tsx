@@ -6,8 +6,9 @@ import { Routes } from './routes';
 import ProfileScreen from '../screens/ProfileScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import ProfileFormScreen from '../screens/ProfileFormScreen';
+import { RootStackParamList } from '../constants/types';
 
-const Stack = createNativeStackNavigator<any>(); //!
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const ProfileNavigator: FC = () => {
   return (

@@ -20,15 +20,10 @@ import Button from '../components/Button';
 import { WIDTH } from '../constants/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProfile, setProfileLoading } from '../store/profileSlice';
-import { fetchProfile, updateProfile } from '../services/APIService';
+import { getProfile, updateProfile } from '../services/APIService';
 import { RootState } from '../store/store';
 import Loader from '../components/Loader';
-
-export interface ProfileFormScreenProps {
-  //
-  navigation: any; //!
-  route: any; //!
-}
+import { ProfileFormScreenProps } from '../constants/types';
 
 const ProfileFormScreen: FC<ProfileFormScreenProps> = (props) => {
   const dispatch = useDispatch();
@@ -49,7 +44,7 @@ const ProfileFormScreen: FC<ProfileFormScreenProps> = (props) => {
   };
 
   const loadProfile = () => {
-    fetchProfile(dispatch);
+    getProfile(dispatch);
   };
 
   const onPressSave = async () => {

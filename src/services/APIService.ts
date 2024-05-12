@@ -1,6 +1,6 @@
 import { setCatalogLoading, setProducts } from '../store/productsSlice';
 import { AppDispatch } from '../store/store';
-import { Order, Product } from '../constants/types';
+import { History, Order, Product, Profile } from '../constants/types';
 import { setCartLoading } from '../store/cartSlice';
 import {
   setHistory,
@@ -10,7 +10,7 @@ import {
 
 const url = 'http://localhost:3000';
 
-export const fetchProducts = async (dispatch: AppDispatch) => {
+export const getProducts = async (dispatch: AppDispatch) => {
   dispatch(setCatalogLoading(true));
   try {
     const data: Product[] = await fetch(`${url}/products`).then((res) =>
@@ -42,10 +42,12 @@ export const createOrder = async (order: Order, dispatch: AppDispatch) => {
   }
 };
 
-export const fetchProfile = async (dispatch: AppDispatch) => {
+export const getProfile = async (dispatch: AppDispatch) => {
   dispatch(setProfileLoading(true));
   try {
-    const profile = await fetch(`${url}/profile`).then((res) => res.json());
+    const profile: Profile = await fetch(`${url}/profile`).then((res) =>
+      res.json()
+    );
     dispatch(setProfile(profile));
   } catch (error) {
     console.error('Failed to fetch profile:', error);
@@ -54,10 +56,12 @@ export const fetchProfile = async (dispatch: AppDispatch) => {
   }
 };
 
-export const fetchHistory = async (dispatch: AppDispatch) => {
+export const getHistory = async (dispatch: AppDispatch) => {
   dispatch(setProfileLoading(true));
   try {
-    const history = await fetch(`${url}/history`).then((res) => res.json());
+    const history: History[] = await fetch(`${url}/history`).then((res) =>
+      res.json()
+    );
 
     dispatch(setHistory(history));
   } catch (error) {

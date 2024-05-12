@@ -5,8 +5,9 @@ import { Routes } from './routes';
 
 import CatalogItemScreen from '../screens/CatalogItemScreen';
 import CatalogScreen from '../screens/CatalogScreen';
+import { RootStackParamList } from '../constants/types';
 
-const Stack = createNativeStackNavigator<any>(); //!
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const CatalogNavigator: FC = () => {
   return (

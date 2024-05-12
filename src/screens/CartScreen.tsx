@@ -5,15 +5,14 @@ import {
   StyleSheet,
   ActivityIndicator,
   FlatList,
-  Image,
-  ScrollView,
 } from 'react-native';
-import { BLUE, BLUE_10, DARK, FON, GREEN, RED } from '../constants/colors';
+import { BLUE, BLUE_10, DARK, FON } from '../constants/colors';
 import CartHeader from '../components/headers/CartHeader';
 import Button from '../components/Button';
-import CartItem, { CartItemProps } from '../components/CartItem';
+import CartItem from '../components/CartItem';
 import { SIZES } from '../constants/fonts';
 import { useDispatch, useSelector } from 'react-redux';
+
 import {
   removeItem,
   clearCart,
@@ -21,32 +20,25 @@ import {
   setCartLoading,
 } from '../store/cartSlice';
 import { RootState } from '../store/store';
-import CustomModal from '../components/CustomModal';
-import { WIDTH } from '../constants/constants';
 
-import success from '../svg/success.svg';
-import fail from '../svg/fail.svg';
-import Icon from '../components/Icon';
-import { createOrder } from '../services/APIService';
+import { createOrder, getHistory } from '../services/APIService';
 import { getTotal, serializeOrder } from '../utils/serialize';
 import Divider from '../components/Divider';
 import ConfirmedOrderModal from '../components/modals/ConfirmedOrderModal';
 import ErrorModal from '../components/modals/ErrorModal';
+import { CartScreenProps } from '../constants/types';
 
-const CartScreen: FC = ({ navigation }) => {
+const CartScreen: FC<CartScreenProps> = () => {
   const dispatch = useDispatch();
   const { items: cartItems, isLoading } = useSelector(
     (state: RootState) => state.cart
   );
+
   const [total, setTotal] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isErrorModalVisible, setIsErrorModalVisible] = useState(false);
 
-  const renderItem = ({ item, index }: CartItemProps) => (
-    <CartItem item={item} index={index} handleRemove={handleRemove} />
-  );
-
-  const onPress = () => {
+  const onConfirmPress = () => {
     if (!!cartItems.length) {
       makeOrder();
     } else {
@@ -65,9 +57,10 @@ const CartScreen: FC = ({ navigation }) => {
       dispatch(clearCart());
     } catch (error) {
       console.error('\n Cart error: ', error);
+    } finally {
+      getHistory(dispatch);
+      setIsModalVisible(true);
     }
-
-    setIsModalVisible(true);
   };
 
   const renderEmptyList = () => {
@@ -107,7 +100,9 @@ const CartScreen: FC = ({ navigation }) => {
 
         <FlatList
           data={cartItems}
-          renderItem={renderItem}
+          renderItem={({ item, index }) => (
+            <CartItem item={item} index={index} handleRemove={handleRemove} />
+          )}
           keyExtractor={(_item, index) => String(index)}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <Divider />}
@@ -119,7 +114,7 @@ const CartScreen: FC = ({ navigation }) => {
         <View style={styles.footer}>
           <Text style={styles.total}>{`Total: ${total} ₽`}</Text>
 
-          <Button title='confirm order' onPress={onPress} />
+          <Button title='confirm order' onPress={onConfirmPress} />
         </View>
       </View>
       <ConfirmedOrderModal

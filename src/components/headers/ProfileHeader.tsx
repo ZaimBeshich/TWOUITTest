@@ -12,7 +12,7 @@ import {
 
 import gear from '../../svg/gear.svg';
 import Icon from '../Icon';
-import { Profile } from '../../store/profileSlice';
+import { Profile } from '../../constants/types';
 
 interface ProfileHeaderProps {
   profile: Profile;
