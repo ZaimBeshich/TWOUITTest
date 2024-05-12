@@ -44,7 +44,7 @@ const CatalogScreen: FC<CatalogScreenProps> = (props) => {
   };
 
   const navigateToItemScreen = (item: Product) => {
-    navigation.navigate(Routes.CatalogItemScreen, item);
+    navigation.navigate(Routes.CatalogItemScreen, { item });
   };
 
   const sortByCheap = () => {
@@ -54,8 +54,6 @@ const CatalogScreen: FC<CatalogScreenProps> = (props) => {
   const sortByTop = () => {
     dispatch(setProducts(sortUp([...products])));
   };
-
-  // console.log('Cat props: ', props);
 
   return (
     <View style={styles.container}>

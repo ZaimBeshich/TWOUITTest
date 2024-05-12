@@ -44,7 +44,7 @@ const CatalogItem = ({
 
 const CONTAINER_MARGIN = 14 * 2;
 const MARGIN_RIGHT = 8;
-const ITEM_WIDTH = WIDTH / 3 - CONTAINER_MARGIN + MARGIN_RIGHT * 2 - 4;
+const ITEM_WIDTH = WIDTH / 3 - CONTAINER_MARGIN / 3 - MARGIN_RIGHT;
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
