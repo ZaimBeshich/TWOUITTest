@@ -1,4 +1,6 @@
 export enum Routes {
+  Tab = 'Tab',
+
   Catalog = 'Catalog',
   CatalogScreen = 'CatalogScreen',
   CatalogItemScreen = 'CatalogItemScreen',
@@ -6,7 +8,8 @@ export enum Routes {
   Cart = 'Cart',
   CartScreen = 'CartScreen',
 
+  Profile = 'Profile',
   ProfileScreen = 'ProfileScreen',
-
-  Tab = 'Tab',
+  HistoryScreen = 'HistoryScreen',
+  ProfileFormScreen = 'ProfileFormScreen',
 }

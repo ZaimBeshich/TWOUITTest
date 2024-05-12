@@ -5,32 +5,34 @@ import { StyleSheet } from 'react-native';
 import { Routes } from './routes';
 
 import { TURQUOISE } from '../constants/colors';
-import CatalogItemScreen from '../screens/CatalogItemScreen';
-import CatalogScreen from '../screens/CatalogScreen';
 import {
   useSafeAreaInsets,
   withSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import ProfileScreen from '../screens/ProfileScreen';
+import HistoryScreen from '../screens/HistoryScreen';
+import ProfileFormScreen from '../screens/ProfileFormScreen';
 
 const Stack = createNativeStackNavigator<any>(); //!
 
-const CatalogNavigator: FC = () => {
+const ProfileNavigator: FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         // contentStyle: [styles.contentStyle, { paddingTop: insets.top + 6 }],
       }}
-      initialRouteName={Routes.CatalogScreen}>
-      <Stack.Screen name={Routes.CatalogScreen} component={CatalogScreen} />
+      initialRouteName={Routes.ProfileScreen}>
+      <Stack.Screen name={Routes.ProfileScreen} component={ProfileScreen} />
+      <Stack.Screen name={Routes.HistoryScreen} component={HistoryScreen} />
       <Stack.Screen
-        name={Routes.CatalogItemScreen}
-        component={CatalogItemScreen}
+        name={Routes.ProfileFormScreen}
+        component={ProfileFormScreen}
       />
     </Stack.Navigator>
   );
 };
-export default CatalogNavigator;
+export default ProfileNavigator;
 
 const styles = StyleSheet.create({
   contentStyle: {

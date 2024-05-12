@@ -1,19 +1,29 @@
 import * as React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Routes} from './routes';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Routes } from './routes';
 import {} from '../screens';
 import {
   useSafeAreaInsets,
   withSafeAreaInsets,
 } from 'react-native-safe-area-context';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import CatalogNavigator from './CatalogNavigator';
 import CatalogScreen from '../screens/CatalogScreen';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import {DARK_LIGHT, GREY_LINK, LIGHT, LIGHT_BLUE} from '../constants/colors';
-import {SIZES} from '../constants/fonts';
+import {
+  BLUE_10,
+  DARK_LIGHT,
+  GREY_LINK,
+  LIGHT,
+  LIGHT_BLUE,
+  PURPLE,
+} from '../constants/colors';
+import { SIZES } from '../constants/fonts';
 import CartNavigator from './CartNavigator';
+import ProfileNavigator from './ProfileNavigator';
+import Icon from '../components/Icon';
+import { getTabBarIcon } from '../utils/tabNavigatorUtils';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,32 +32,32 @@ function TabNavigator() {
 
   return (
     <Tab.Navigator
-      screenOptions={() => ({
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => getTabBarIcon(route.name, focused),
         headerShown: false,
-        // tabBarIcon: ({focused}) => getTabBarIcon(route.name, focused),
         tabBarStyle: [
           styles.tabBarStyle,
-          {paddingBottom: insets.bottom + 8, height: 60 + insets.bottom},
+          { paddingBottom: insets.bottom + 8, height: 60 + insets.bottom },
         ],
         tabBarLabelStyle: styles.tabBarLabelStyle,
         tabBarItemStyle: styles.tabBarItem,
-        tabBarActiveTintColor: DARK_LIGHT,
-        tabBarInactiveTintColor: GREY_LINK,
+        tabBarActiveTintColor: PURPLE,
+        tabBarInactiveTintColor: BLUE_10,
       })}>
       <Tab.Screen
         name={Routes.Catalog}
         component={CatalogNavigator}
-        options={{tabBarLabel: 'Catalog'}}
+        options={{ tabBarLabel: 'Catalog' }}
       />
       <Tab.Screen
         name={Routes.Cart}
         component={CartNavigator}
-        options={{tabBarLabel: 'Cart'}}
+        options={{ tabBarLabel: 'Cart' }}
       />
       <Tab.Screen
-        name={Routes.ProfileScreen}
-        component={ProfileScreen}
-        options={{tabBarLabel: 'Profile'}}
+        name={Routes.Profile}
+        component={ProfileNavigator}
+        options={{ tabBarLabel: 'Profile' }}
       />
     </Tab.Navigator>
   );
