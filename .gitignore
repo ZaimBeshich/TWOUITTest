@@ -65,3 +65,7 @@ yarn-error.log
 
 # testing
 /coverage
+
+
+#fake BD
+db.json
