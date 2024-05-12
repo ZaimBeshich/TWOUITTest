@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { scale, verticalScale } from '../utils/scale';
+import { HistoryItemProps } from '../constants/types';
 
-const HistoryItem: FC<HistoryItemProps> = (props) => {
-  const { el } = props;
+const HistoryItem: FC<HistoryItemProps> = ({ el }) => {
   return (
     <View key={String(el.id)} style={styles.itemContainer}>
       <View style={styles.imageContainer}>

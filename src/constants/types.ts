@@ -65,6 +65,10 @@ export type TabParamList = {
   [Routes.Profile]: undefined;
 };
 
+export type HistoryItemProps = {
+  el: History;
+};
+
 export interface RootStackParamList {
   [key: string]: any;
 }
