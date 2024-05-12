@@ -48,6 +48,8 @@ npm run ios
 
 ```
 
+If the application does not see the port of the fake server, you need to make sure they are running on the same network port
+
 If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
